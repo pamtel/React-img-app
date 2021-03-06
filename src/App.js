@@ -11,15 +11,17 @@ const App = () => {
   const [error, setError] = useState(false);
   const [noData, setNoData] = useState(false);
   const [photos, setPhotos] = useState([]);
-
+  
   // Search for images
   const search = (data) => {
     console.log('Photos',photos.length)
     // if()
   setLoading(true);
+  setLoading(false)
     if(!data){
       setLoading(false);
       setNoData(true);
+      setNoData(false);
     }else{
       const SearchImages = `https://api.unsplash.com/search/photos?page=1&per_page=30&query=${data}&client_id=yMOEW96irltYOVkTWeZvtHM56ypGXuJc6D-h9zi8sG0`
       axios.get(SearchImages)
@@ -55,11 +57,16 @@ const App = () => {
     display()
   }, []);
 
+  if(loading) {
+    return <h2 className="text-center">Loading...</h2>
+  }
+  
+  if(error) {
+      return <h2 className="text-center text-red-500">Ooops!!! Something went wrong</h2>
+  }
+
   if(noData) {
     return <h2 className="text-center">Ooops!!! Data not found</h2>
-  }
-  if(error) {
-      return <h2 className="text-center">Ooops!!! Something went wrong</h2>
   }
   
   return (
@@ -69,11 +76,6 @@ const App = () => {
       <Images photos={photos} />
     </div>
   );
-
-  if(loading) {
-    return <h2 className="text-center">Loading...</h2>
-  }
-  
 }
 
 export default App;

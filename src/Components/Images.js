@@ -3,7 +3,6 @@ import Image from "./Image";
 
 function Images(props) {
     const {photos} = props;
-    // console.log("imgPhotos", photos);
 
     return (
         <div className="container mx-auto mt-10 mb-20 px-10">

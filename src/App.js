@@ -4,6 +4,7 @@ import Search from "./Components/Search";
 import Images from "./Components/Images";
 import { useState , useEffect} from 'react';
 import axios from 'axios';
+import IsLoading from './Components/IsLoading';
 const API = 'https://api.unsplash.com/photos/?client_id=yMOEW96irltYOVkTWeZvtHM56ypGXuJc6D-h9zi8sG0&per_page=30';
 
 const App = () => {
@@ -15,15 +16,15 @@ const App = () => {
   // Search for images
   const search = (data) => {
     console.log('Photos',photos.length)
-    // if()
-  setLoading(true);
+    // if()  
   setLoading(false)
     if(!data){
       setLoading(false);
       setNoData(true);
-      setNoData(false);
+      setPhotos(data)
     }else{
-      const SearchImages = `https://api.unsplash.com/search/photos?page=1&per_page=30&query=${data}&client_id=yMOEW96irltYOVkTWeZvtHM56ypGXuJc6D-h9zi8sG0`
+      const query = data.trim()
+      const SearchImages = `https://api.unsplash.com/search/photos?page=1&per_page=30&query=${query}&client_id=yMOEW96irltYOVkTWeZvtHM56ypGXuJc6D-h9zi8sG0`
       axios.get(SearchImages)
       .then(res => {
         setPhotos(res.data.results);
@@ -58,7 +59,13 @@ const App = () => {
   }, []);
 
   if(loading) {
-    return <h2 className="text-center">Loading...</h2>
+    return (
+      <div className="container mx-auto mt-10 mb-20 px-10">
+         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {[1,2,3,4,5,6].map(n => <IsLoading key={n}/>)}
+         </div>
+      </div>
+    )
   }
   
   if(error) {
@@ -72,10 +79,9 @@ const App = () => {
   return (
     <div>
       <Header search={search}/>
-      {/* <Search/> */}
       <Images photos={photos} />
     </div>
-  );
+  )
 }
 
 export default App;
